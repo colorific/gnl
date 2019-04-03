@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/03 14:46:30 by forange-         ###   ########.fr       */
+/*   Updated: 2019/04/03 15:59:36 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 typedef struct	s_node
 {
-	void		*str;
+	char		str[BUFF_SIZE];
 	int			size; 		/* if flag = -1 size of *str; flag = 1 size until \n */
 	char		flag; 		/* 0 - no data, 1 - some left and \n included, -1 - some left and no \n */
 }				t_node;

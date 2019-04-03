@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:39:27 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/03 15:02:57 by forange-         ###   ########.fr       */
+/*   Updated: 2019/04/03 16:00:03 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char *ft_get_line()
 int	get_next_line(const int fd, char **line)
 {
 	static t_node fd_ar[4864]; /* ulimit -n */
-
+	char *res;
 
 	if (fd == 0 || fd > 2)
 	{
