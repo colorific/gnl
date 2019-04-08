@@ -6,7 +6,7 @@
 #    By: forange- <forange-@student.fr.42>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/08 23:08:59 by kirill            #+#    #+#              #
-#    Updated: 2018/12/25 00:17:34 by forange-         ###   ########.fr        #
+#    Updated: 2018/12/21 04:46:02 by forange-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=libft.a
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror -g -O0
+CFLAGS=-Wall -Wextra -Werror
 
 RM=rm -f
 
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
-$(OBJ): $(SRC) $(NAME:.a=.h)
+$(OBJ): $(SRC) libft.h
 	$(CC) $(CFLAGS) -c $(SRC)
 
 all: $(NAME)
@@ -53,4 +53,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: clean fclean

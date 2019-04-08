@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 15:01:43 by kirill            #+#    #+#             */
-/*   Updated: 2018/12/25 00:26:06 by forange-         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:28:36 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int					ft_atoi(const char *str)
 	{
 		test = res;
 		res = res * 10 + (*str - 48);
-		if (test > (res / 10))
+		if (test >= res)
 			return (sign > 0 ? -1 : 0);
 		str++;
 	}
