@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "./libft/libft.h"
+#include "libft/libft.h"
 #include <stdlib.h>
 #include <limits.h>
 
@@ -28,5 +28,5 @@ int main(void)
 //		if (!(i / 10000))
 //			printf ("%li\n",i);
 	}
-	return 0;
+	return (0);
 }
