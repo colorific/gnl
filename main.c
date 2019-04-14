@@ -48,7 +48,12 @@ int main(void)
 		printf("buf = %s\n", buf);
 	}
 
-	while (get_next_line(f, NULL))
+	while (get_next_line(f, NULL) >= 0)
+	{
+		printf("buf = %s\n", buf);
+	}
+
+	while (get_next_line(100, &buf) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
