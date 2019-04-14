@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <string.h>
 #include "get_next_line.h"
 
 int main(void)
@@ -12,21 +13,21 @@ int main(void)
 
 	while (++i < 10)
 	{
-		ft_memset(in, i+48, 20);
-	//i = LONG_MIN;
-	//while (i > (LONG_MAX / 10) )
-	//{
-	//	sprintf(in, "%li", i++);
+		ft_memset(in, i + 48, 20);
+		//i = LONG_MIN;
+		//while (i > (LONG_MAX / 10) )
+		//{
+		//	sprintf(in, "%li", i++);
 		//scanf("%s", in);
-	//	if (ft_atoi(in) != atoi(in))
+		//	if (ft_atoi(in) != atoi(in))
 		printf("%s\n", in);
 		if (ft_atoi(in) == atoi(in))
 			printf("OK\n");
 		else
-			printf ("FAIL:%s\n", in);
-			//printf("atoi:%d || libc:%d\n", ft_atoi(in), atoi(in));
-//		if (!(i / 10000))
-//			printf ("%li\n",i);
+			printf("FAIL:%s\n", in);
+		//printf("atoi:%d || libc:%d\n", ft_atoi(in), atoi(in));
+		//		if (!(i / 10000))
+		//			printf ("%li\n",i);
 	}
 	/* ******************* READ TEST ******************* */
 
@@ -42,18 +43,23 @@ int main(void)
 		printf("buf = %s\n", buf);
 	}
 
-	buf = (char*)malloc(BUFF_SIZE);
+	buf = (char *)malloc(BUFF_SIZE);
 	while (get_next_line(f, &buf))
 	{
 		printf("buf = %s\n", buf);
 	}
-
+/*
 	while (get_next_line(f, NULL) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
 
 	while (get_next_line(100, &buf) >= 0)
+	{
+		printf("buf = %s\n", buf);
+	}
+*/
+	while (get_next_line(MAX_FD + 1, &buf) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
