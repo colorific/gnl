@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
+/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/08 18:03:56 by forange-         ###   ########.fr       */
+/*   Updated: 2019/04/14 11:27:04 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@
 # include <stdlib.h>
 # include "libft/libft.h"
 # define BUFF_SIZE 32
-# define EOF 0
 # define MAX_FD 4865 /* ulimit -n */
 
-enum state_flags
+enum e_flags
 {
-	EMPTY = 0,
-	FILLED = 1,
-	END = 2
-} flags;
+	EMPTY = 1,
+	FILLED = 2,
+	END = 4
+} t_flags;
 
 typedef struct	s_node
 {

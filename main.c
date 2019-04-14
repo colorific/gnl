@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "libft/libft.h"
-#include <stdlib.h>
 #include <limits.h>
+#include <fcntl.h>
+#include "get_next_line.h"
 
 int main(void)
 {
@@ -27,6 +27,30 @@ int main(void)
 			//printf("atoi:%d || libc:%d\n", ft_atoi(in), atoi(in));
 //		if (!(i / 10000))
 //			printf ("%li\n",i);
+	}
+	/* ******************* READ TEST ******************* */
+
+	int f;
+	int red;
+	char *buf;
+
+	buf = NULL;
+	f = open("text.txt", O_RDONLY);
+	red = read(f, buf, 0);
+	while (get_next_line(f, &buf))
+	{
+		printf("buf = %s\n", buf);
+	}
+
+	buf = (char*)malloc(BUFF_SIZE);
+	while (get_next_line(f, &buf))
+	{
+		printf("buf = %s\n", buf);
+	}
+
+	while (get_next_line(f, NULL))
+	{
+		printf("buf = %s\n", buf);
 	}
 	return (0);
 }
