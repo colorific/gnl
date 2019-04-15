@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/14 11:27:04 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/15 21:36:33 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft/libft.h"
 # define BUFF_SIZE 32
 # define MAX_FD 4865 /* ulimit -n */
+# define EOL 0x0A
 
 enum e_flags
 {
