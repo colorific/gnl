@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/16 16:40:16 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/16 17:06:41 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_list *ft_realloc(t_list *ptr, size_t size)
 
 	temp = (t_list *)ft_memalloc(size * sizeof(t_list));
 	temp = ft_memcpy(temp, ptr, (ptr->next - ptr));
+	temp[0].next = temp + size - 1;
 	ft_memdel((void **)ptr);
 	return (temp);
 }
@@ -27,8 +28,8 @@ t_list *ft_realloc(t_list *ptr, size_t size)
  */
 int ft_readline(int fd, t_list **arr, char **line)
 {
-	if (arr[fd]->next == NULL)
-		return (0);
+	if (!arr[fd]) /* всегда TRUE надо (*arr)[fd] */
+		(*arr)[fd].next = arr[0]->next;
 	(void)line;
 	return (0);
 }
