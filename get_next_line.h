@@ -6,33 +6,20 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/15 21:36:33 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/16 15:20:53 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft/libft.h"
 # define BUFF_SIZE 32
 # define MAX_FD 4865 /* ulimit -n */
 # define EOL 0x0A
-
-enum e_flags
-{
-	EMPTY = 1,
-	FILLED = 2,
-	END = 4
-} t_flags;
-
-typedef struct	s_node
-{
-	char		str[BUFF_SIZE]; /* if (*str == '\0' && !flag) - new fd, if (!*str && flag == -1) - EOF */
-	int			size; 			/* if flag = -1 size of *str; flag = 1 size until \n */
-	char		flag; 			/* 0 - no data, 1 - some left and \n included, -1 - EOF */
-}				t_node;
 
 int	get_next_line(const int fd, char **line);
 

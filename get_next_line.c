@@ -3,46 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
+/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 14:39:27 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/14 20:40:49 by forange-         ###   ########.fr       */
+/*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
+/*   Updated: 2019/04/16 16:40:16 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int					get_next_line(const int fd, char **line)
+t_list *ft_realloc(t_list *ptr, size_t size)
 {
-	static t_node	**fd_ar;
-	t_node			**temp;
-//	char			*res;
-	int				len;
+	t_list *temp;
 
-	len = MAX_FD;
+	temp = (t_list *)ft_memalloc(size * sizeof(t_list));
+	temp = ft_memcpy(temp, ptr, (ptr->next - ptr));
+	ft_memdel((void **)ptr);
+	return (temp);
+}
+/* В указатель next лежит:
+	1) адрес последнего элемента массива
+	2) NULL если по данному fd достигнут EOF
+ */
+int ft_readline(int fd, t_list **arr, char **line)
+{
+	if (arr[fd]->next == NULL)
+		return (0);
+	(void)line;
+	return (0);
+}
+
+int get_next_line(const int fd, char **line)
+{
+	static t_list *fd_ar;
+
 	if (!line || read(fd, NULL, 0) < 0)
 		return (-1);
-	if (!fd_ar || fd >= len)
+	if (!fd_ar)
 	{
-		temp = (fd >= len ? fd_ar : NULL);
-		if (!(fd_ar = (t_node**)malloc(sizeof(t_node*) * \
-			(fd >= len ? fd + 1 : len))))
+		if (!(fd_ar = (t_list *)ft_memalloc(sizeof(t_list) * MAX_FD)))
 			return (-1);
-		else
-			ft_bzero(fd_ar, (fd >= len ? fd + 1 : len));
-		if (temp)
-		{
-			ft_memcpy(fd_ar, temp, sizeof(t_node**) * len);
-			ft_memdel((void**)&temp);
-		}
+		fd_ar[0].next = fd_ar + MAX_FD - 1;
 	}
+	if (fd >= fd_ar[0].next - fd_ar)
+		fd_ar = ft_realloc(fd_ar, fd + 1);
 	if (*line)
-		ft_memdel((void**)line);
-	if (fd == 0 || fd > 2)
-	{
-		;
-	}
-	else
-		return (-1);
-	return (0);
+		ft_memdel((void **)line);
+	return (fd_ar ? ft_readline(fd, &fd_ar, line) : -1);
 }
