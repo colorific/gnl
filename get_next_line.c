@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/16 17:06:41 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/16 19:23:57 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,16 @@ t_list *ft_realloc(t_list *ptr, size_t size)
  */
 int ft_readline(int fd, t_list **arr, char **line)
 {
-	if (!arr[fd]) /* всегда TRUE надо (*arr)[fd] */
-		(*arr)[fd].next = arr[0]->next;
+	if (!(*arr)[fd].content)
+	{
+		if (!((*arr)[fd].content = malloc(BUFF_SIZE)))
+			return (-1);
+		while(((*arr)[fd].content_size = read(fd, &(*arr)[fd].content, BUFF_SIZE)) > 0)
+		{
+			*line = (char*)malloc(BUFF_SIZE);
+			ft_memccpy(&line, &(*arr)[fd].content, EOL, (*arr)[fd].content_size);
+		}
+	}
 	(void)line;
 	return (0);
 }

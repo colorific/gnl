@@ -43,7 +43,7 @@ int main(void)
 	{
 		printf("buf = %s\n", buf);
 	}
-
+	printf("str:%s\n", buf);
 	/* Передача строки с содержимым */
 	buf = (char *)malloc(BUFF_SIZE);
 	while (get_next_line(f, &buf))
