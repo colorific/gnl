@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/16 19:23:57 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/17 10:19:33 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,28 @@ t_list *ft_realloc(t_list *ptr, size_t size)
 	ft_memdel((void **)ptr);
 	return (temp);
 }
-/* В указатель next лежит:
-	1) адрес последнего элемента массива
-	2) NULL если по данному fd достигнут EOF
- */
+
+/*
+**	В указатель next лежит:
+**	1) адрес последнего элемента массива
+**	2) NULL если по данному fd достигнут EOF
+*/
 int ft_readline(int fd, t_list **arr, char **line)
 {
+	//unsigned char* temp;
+
 	if (!(*arr)[fd].content)
 	{
 		if (!((*arr)[fd].content = malloc(BUFF_SIZE)))
 			return (-1);
-		while(((*arr)[fd].content_size = read(fd, &(*arr)[fd].content, BUFF_SIZE)) > 0)
+		while(((*arr)[fd].content_size = \
+			read(fd, &(*arr)[fd].content, BUFF_SIZE)) > 0)
 		{
-			*line = (char*)malloc(BUFF_SIZE);
-			ft_memccpy(&line, &(*arr)[fd].content, EOL, (*arr)[fd].content_size);
+			*line = (char*)ft_memalloc((*arr)[fd].content_size);
+			ft_memccpy(*line, &(*arr)[fd].content, EOL, \
+				(*arr)[fd].content_size);
 		}
 	}
-	(void)line;
 	return (0);
 }
 
