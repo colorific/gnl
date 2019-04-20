@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
+/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/19 19:08:56 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/20 16:26:36 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int ft_readline(int fd, t_node **arr, char **line)
 		{
 			if (((*arr)[fd].ch = ft_memchr(&(*arr)[fd].content, EOL, (*arr)[fd].content_size)))
 			{
-				*line = (char*)malloc((unsigned char*)(*arr)[fd].ch - (unsigned char*)&(*arr)[fd].content);
+				*line = (char*)malloc((*arr)[fd].ch - (unsigned char*)&(*arr)[fd].content);
 				ft_memccpy(*line, &(*arr)[fd].content, EOL, \
 						(*arr)[fd].content_size);
 			}/*
