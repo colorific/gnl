@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
+/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/20 16:26:36 by forange-         ###   ########.fr       */
+/*   Updated: 2019/04/21 09:34:19 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int ft_readline(int fd, t_node **arr, char **line)
 	{
 		if (!((*arr)[fd].content = malloc(BUFF_SIZE)))
 			return (-1);
-		while (!(((*arr)[fd].content_size += read(fd, &(*arr)[fd].content, \
-				BUFF_SIZE)) % BUFF_SIZE))
+		while (!(((*arr)[fd].content_size += (read(fd, &(*arr)[fd].content, \
+				BUFF_SIZE))) % BUFF_SIZE))
 		{
 			if (((*arr)[fd].ch = ft_memchr(&(*arr)[fd].content, EOL, (*arr)[fd].content_size)))
 			{

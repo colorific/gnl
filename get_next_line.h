@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/04/19 19:11:30 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/21 08:56:44 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 typedef struct		s_node
 {
 	unsigned char	*content;
-	size_t			content_size;
 	unsigned char	*ch;
+	size_t			content_size;
 	void			*isany;
 	int				arsize;
 }					t_node;
