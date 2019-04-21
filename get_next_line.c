@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
+/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/21 09:34:19 by kirill           ###   ########.fr       */
+/*   Updated: 2019/04/21 15:32:08 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,41 @@ t_node *ft_realloc(t_node *ptr, size_t size)
 	return (temp);
 }
 
+/* тут теряется содержимое content */
+
+void *ft_chrealloc(t_node *ptr, size_t size)
+{
+	unsigned char *res;
+
+	res = (unsigned char*)malloc(size);
+	res = ft_memcpy(res, ptr->content, ptr->content_size);
+	return (res);
+}
+
+int ft_check(t_node *node, char **line)
+{
+	if (!(node->ch = ft_memchr((node->content), EOL, node->content_size)))
+		node->content = ft_chrealloc(node, node->content_size + BUFF_SIZE);
+	else
+	{
+		*line = (char*)malloc(node->ch - node->content);
+		*line = ft_memcpy(*line, node->content, node->ch - node->content);
+		return (1);
+	}
+	return (0);
+}
+
 int ft_readline(int fd, t_node **arr, char **line)
 {
-	if (!(*arr)[fd].content)
+	int bytes_read;
+
+	if (!(*arr)[fd].ch)
+		ft_check(&(*arr)[fd], line);
+	while (!((bytes_read = read(fd, &(*arr)[fd].content + (*arr)[fd].content_size, BUFF_SIZE)) % BUFF_SIZE) && bytes_read)
 	{
-		if (!((*arr)[fd].content = malloc(BUFF_SIZE)))
-			return (-1);
-		while (!(((*arr)[fd].content_size += (read(fd, &(*arr)[fd].content, \
-				BUFF_SIZE))) % BUFF_SIZE))
-		{
-			if (((*arr)[fd].ch = ft_memchr(&(*arr)[fd].content, EOL, (*arr)[fd].content_size)))
-			{
-				*line = (char*)malloc((*arr)[fd].ch - (unsigned char*)&(*arr)[fd].content);
-				ft_memccpy(*line, &(*arr)[fd].content, EOL, \
-						(*arr)[fd].content_size);
-			}/*
-			else
-			{
-				temp = (char*)malloc()
-			}
-*/
-		}
+		(*arr)[fd].content_size += bytes_read;
+		if (ft_check(&(*arr)[fd], line))
+			return (1);
 	}
 	return (0);
 }
