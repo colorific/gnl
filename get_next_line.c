@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/04/21 15:32:08 by forange-         ###   ########.fr       */
+/*   Updated: 2019/05/31 21:06:05 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void *ft_chrealloc(t_node *ptr, size_t size)
 	unsigned char *res;
 
 	res = (unsigned char*)malloc(size);
-	res = ft_memcpy(res, ptr->content, ptr->content_size);
+	res = ft_memcpy(res, &ptr->content, ptr->content_size);
 	return (res);
 }
 
 int ft_check(t_node *node, char **line)
 {
-	if (!(node->ch = ft_memchr((node->content), EOL, node->content_size)))
+	if (!(node->ch = ft_memchr((&node->content), EOL, node->content_size)))
 		node->content = ft_chrealloc(node, node->content_size + BUFF_SIZE);
 	else
 	{
@@ -64,7 +64,7 @@ int ft_readline(int fd, t_node **arr, char **line)
 	return (0);
 }
 
-int get_next_line(const int fd, char **line)
+int	get_next_line(const int fd, char **line)
 {
 	static t_node *fd_ar;
 
