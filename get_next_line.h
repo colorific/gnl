@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/06/10 18:18:39 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/17 21:05:26 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 
 typedef struct		s_node
 {
-	unsigned char	content[BUFF_SIZE + 1];
-	void			*isany;
+	unsigned char	*content;
+	unsigned char	*ch;
+	t_node			*isany;
 	int				arsize;
+	int				content_size;
 }					t_node;
 
 int	get_next_line(const int fd, char **line);

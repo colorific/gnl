@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/10 17:33:11 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/17 22:23:22 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node *ft_realloc(t_node *ptr, size_t size)
 
 	if ((temp = (t_node *)ft_memalloc(size * sizeof(t_node))) != 0)
 	{
-		temp = ft_memcpy(temp, ptr, (ptr->arsize));
+		temp = ft_memcpy(temp, ptr, (ptr[0].arsize));
 		temp[0].arsize = size;
 		ft_memdel((void **)ptr);
 	}
@@ -39,7 +39,8 @@ void *ft_chrealloc(t_node *ptr, size_t size)
 int ft_check(t_node *node, char **line)
 {
 	if (!(node->ch = ft_memchr(node->content, EOL, node->content_size)))
-		node->content = (unsigned char*)ft_chrealloc(node, node->content_size + BUFF_SIZE);
+		node->content = (unsigned char*)ft_chrealloc(node, \
+		node->content_size + BUFF_SIZE);
 	else
 	{
 		*line = (char*)malloc(node->ch - node->content);
@@ -55,8 +56,8 @@ int ft_readline(int fd, t_node *arr, char **line)
 
 	if (!(arr)[fd].ch)
 		ft_check(&(arr)[fd], line);
-	while (!((bytes_read = read(fd, &(arr)[fd].content + \
-			(arr)[fd].content_size, BUFF_SIZE)) % BUFF_SIZE) && bytes_read)
+	while (!((bytes_read = read(fd, (void *)(&(arr)[fd].content + \
+			(arr)[fd].content_size), BUFF_SIZE)) % BUFF_SIZE) && bytes_read)
 	{
 		(arr)[fd].content_size += bytes_read;
 		if (ft_check(&(arr)[fd], line))
@@ -69,6 +70,7 @@ int	get_next_line(const int fd, char **line)
 {
 	static t_node *fd_ar;
 
+	/* если на вход NULL, либо ошибка чтения с fd, возвращаем -1 */
 	if (!line || read(fd, NULL, 0) < 0)
 		return (-1);
 	if (!fd_ar)
@@ -80,10 +82,10 @@ int	get_next_line(const int fd, char **line)
 	}
 	if (fd >= fd_ar[0].arsize)
 	{
-		if (!(fd_ar = ft_realloc(fd_ar, fd + 1)))
+		if (!(fd_ar = ft_realloc(&fd_ar, fd + 1)))
 			return (-1);
 	}
-	if (!ft_readline(fd, fd_ar, line) && !(fd_ar[0].isany))
+	if (!ft_readline(fd, &fd_ar, &line) && !(fd_ar[0].isany))
 	{
 		free(fd_ar);
 		fd_ar = NULL;
