@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/17 22:23:22 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/18 22:31:44 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_node *ft_realloc(t_node *ptr, size_t size)
 
 	if ((temp = (t_node *)ft_memalloc(size * sizeof(t_node))) != 0)
 	{
-		temp = ft_memcpy(temp, ptr, (ptr[0].arsize));
+		temp = ft_memcpy(temp, ptr, ptr[0].arsize);
 		temp[0].arsize = size;
-		ft_memdel((void **)ptr);
+		ft_memdel((void **)ptr); /* разобраться с адресами указателей! */
 	}
 	return (temp);
 }
@@ -82,10 +82,10 @@ int	get_next_line(const int fd, char **line)
 	}
 	if (fd >= fd_ar[0].arsize)
 	{
-		if (!(fd_ar = ft_realloc(&fd_ar, fd + 1)))
+		if (!(fd_ar = ft_realloc(fd_ar, fd + 1)))
 			return (-1);
 	}
-	if (!ft_readline(fd, &fd_ar, &line) && !(fd_ar[0].isany))
+	if (!ft_readline(fd, fd_ar, line) && !(fd_ar[0].isany))
 	{
 		free(fd_ar);
 		fd_ar = NULL;
