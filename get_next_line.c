@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/18 22:31:44 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/19 21:24:54 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void *ft_chrealloc(t_node *ptr, size_t size)
 	unsigned char *res;
 
 	res = (unsigned char*)malloc(size);
-	res = ft_memcpy(res, ptr->content, ptr->content_size);
+	res = ft_memcpy(res, &ptr->content, ptr->content_size);
+	/* добавить удаление ptr */
 	return (res);
 }
 
