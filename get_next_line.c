@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/19 21:24:54 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/20 22:35:23 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void *ft_chrealloc(t_node *ptr, size_t size)
 	unsigned char *res;
 
 	res = (unsigned char*)malloc(size);
-	res = ft_memcpy(res, &ptr->content, ptr->content_size);
+	res = ft_memcpy(res, &ptr->content, ptr->content_size); /* проблемы с адресацией !!! */
 	/* добавить удаление ptr */
 	return (res);
 }
@@ -57,8 +57,9 @@ int ft_readline(int fd, t_node *arr, char **line)
 
 	if (!(arr)[fd].ch)
 		ft_check(&(arr)[fd], line);
-	while (!((bytes_read = read(fd, (void *)(&(arr)[fd].content + \
-			(arr)[fd].content_size), BUFF_SIZE)) % BUFF_SIZE) && bytes_read)
+	while (!((bytes_read = read(fd, (void *)\
+	(&(arr)[fd].content[arr[fd].content_size]), BUFF_SIZE)) % BUFF_SIZE)\
+	 && bytes_read)
 	{
 		(arr)[fd].content_size += bytes_read;
 		if (ft_check(&(arr)[fd], line))
