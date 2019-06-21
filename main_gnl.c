@@ -7,7 +7,7 @@
 int main(void)
 {
 	int f;
-	int f2;
+//	int f2;
 	char *buf;
 
 	buf = NULL;
@@ -18,30 +18,32 @@ int main(void)
 	{
 		printf("buf = %s\n", buf);
 	}
+/*
 	printf("str:%s\n", buf);
-	/* Передача строки с содержимым */
+	// Передача строки с содержимым
 	buf = (char *)malloc(BUFF_SIZE);
 	while (get_next_line(f, &buf))
 	{
 		printf("buf = %s\n", buf);
 	}
 
-	/* Передача нулевого указателя */
+	// Передача нулевого указателя
 	while (get_next_line(f, NULL) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
-	/* Передача невалидного FD */
+	// Передача невалидного FD
 	while (get_next_line(100, &buf) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
 
-	/* Передача FD > MAX_FD */
+	// Передача FD > MAX_FD
 	f2 = dup2(f, MAX_FD + 1);
 	while (get_next_line(f2, &buf) >= 0)
 	{
 		printf("buf = %s\n", buf);
 	}
+	 */
 	return (0);
 }

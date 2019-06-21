@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:18 by forange-          #+#    #+#             */
-/*   Updated: 2019/06/19 21:21:50 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:06:06 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft/libft.h"
-# define BUFF_SIZE 3
-# define MAX_FD 4865 /* ulimit -n */
-# define EOL 0x0A
+# define BUFF_SIZE	3
+# define MAX_FD		4865
+# define EOL		0x0A
 
 typedef struct		s_node
 {
@@ -29,6 +29,6 @@ typedef struct		s_node
 	int				content_size;
 }					t_node;
 
-int	get_next_line(const int fd, char **line);
+int					get_next_line(const int fd, char **line);
 
 #endif

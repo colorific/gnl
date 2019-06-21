@@ -6,60 +6,63 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/20 22:35:23 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:09:36 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_node *ft_realloc(t_node *ptr, size_t size)
+t_node				*ft_realloc(t_node *ptr, size_t size)
 {
-	t_node *temp;
+	t_node			*temp;
 
 	if ((temp = (t_node *)ft_memalloc(size * sizeof(t_node))) != 0)
 	{
 		temp = ft_memcpy(temp, ptr, ptr[0].arsize);
 		temp[0].arsize = size;
-		ft_memdel((void **)ptr); /* разобраться с адресами указателей! */
+		ft_memdel((void **)ptr);
 	}
 	return (temp);
 }
 
-/* тут теряется содержимое content */
-
-void *ft_chrealloc(t_node *ptr, size_t size)
+void				*ft_chrealloc(t_node *ptr, size_t size)
 {
-	unsigned char *res;
+	unsigned char	*res;
 
 	res = (unsigned char*)malloc(size);
-	res = ft_memcpy(res, &ptr->content, ptr->content_size); /* проблемы с адресацией !!! */
-	/* добавить удаление ptr */
+	res = (unsigned char*)ft_memcpy(res, ptr->content, ptr->content_size);
+	if (ptr->content)
+	{
+		free((void*)ptr->content);
+		ptr->content = NULL;
+	}
 	return (res);
 }
 
-int ft_check(t_node *node, char **line)
+int					ft_check(t_node *node, char **line)
 {
-	if (!(node->ch = ft_memchr(node->content, EOL, node->content_size)))
+	if (!(node->ch = (unsigned char*)ft_memchr(node->content, EOL,\
+			node->content_size)))
 		node->content = (unsigned char*)ft_chrealloc(node, \
 		node->content_size + BUFF_SIZE);
 	else
 	{
 		*line = (char*)malloc(node->ch - node->content);
-		*line = ft_memcpy(*line, node->content, node->ch - node->content);
+		*line = (char*)ft_memcpy(*line, node->content,\
+										node->ch - node->content);
 		return (1);
 	}
 	return (0);
 }
 
-int ft_readline(int fd, t_node *arr, char **line)
+int					ft_readline(int fd, t_node *arr, char **line)
 {
-	int bytes_read;
+	int				bytes_read;
 
 	if (!(arr)[fd].ch)
 		ft_check(&(arr)[fd], line);
-	while (!((bytes_read = read(fd, (void *)\
-	(&(arr)[fd].content[arr[fd].content_size]), BUFF_SIZE)) % BUFF_SIZE)\
-	 && bytes_read)
+	while ((bytes_read = read(fd, (void *)\
+	(&(arr)[fd].content[arr[fd].content_size]), BUFF_SIZE)))
 	{
 		(arr)[fd].content_size += bytes_read;
 		if (ft_check(&(arr)[fd], line))
@@ -68,11 +71,10 @@ int ft_readline(int fd, t_node *arr, char **line)
 	return (0);
 }
 
-int	get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
-	static t_node *fd_ar;
+	static t_node	*fd_ar;
 
-	/* если на вход NULL, либо ошибка чтения с fd, возвращаем -1 */
 	if (!line || read(fd, NULL, 0) < 0)
 		return (-1);
 	if (!fd_ar)
@@ -92,5 +94,5 @@ int	get_next_line(const int fd, char **line)
 		free(fd_ar);
 		fd_ar = NULL;
 	}
-	return (fd_ar ? (*line ? 1 : 0) : 0);
+	return (fd_ar[fd].ch ? 1 : 0);
 }
