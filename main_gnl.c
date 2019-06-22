@@ -44,6 +44,6 @@ int main(void)
 	{
 		printf("buf = %s\n", buf);
 	}
-	 */
+*/
 	return (0);
 }

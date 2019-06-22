@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/21 20:09:36 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/22 18:48:27 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_node				*ft_realloc(t_node *ptr, size_t size)
 {
 	t_node			*temp;
 
+	temp = NULL;
 	if ((temp = (t_node *)ft_memalloc(size * sizeof(t_node))) != 0)
 	{
 		temp = ft_memcpy(temp, ptr, ptr[0].arsize);
@@ -30,6 +31,8 @@ void				*ft_chrealloc(t_node *ptr, size_t size)
 	unsigned char	*res;
 
 	res = (unsigned char*)malloc(size);
+	if (!res)
+		return (NULL);
 	res = (unsigned char*)ft_memcpy(res, ptr->content, ptr->content_size);
 	if (ptr->content)
 	{
@@ -41,15 +44,28 @@ void				*ft_chrealloc(t_node *ptr, size_t size)
 
 int					ft_check(t_node *node, char **line)
 {
+	unsigned char	*new_content;
+
 	if (!(node->ch = (unsigned char*)ft_memchr(node->content, EOL,\
 			node->content_size)))
-		node->content = (unsigned char*)ft_chrealloc(node, \
-		node->content_size + BUFF_SIZE);
+	{
+		if (!(node->content = (unsigned char*)ft_chrealloc(node, \
+		node->content_size + BUFF_SIZE)))
+			return (-1);
+	}
 	else
 	{
-		*line = (char*)malloc(node->ch - node->content);
+		if (!(*line = (char*)ft_memalloc(node->ch - node->content + 1)))
+			return (-1);
 		*line = (char*)ft_memcpy(*line, node->content,\
-										node->ch - node->content);
+		node->ch - node->content);
+		new_content = (unsigned char*)ft_memalloc(&node->content\
+		[node->content_size - 1] - node->ch + BUFF_SIZE);
+		new_content = ft_memcpy(new_content, node->ch + 1,\
+		&node->content[node->content_size - 1] - node->ch);
+		node->content_size = &node->content[node->content_size - 1] - node->ch;
+		free((void*)node->content);
+		node->content = new_content;
 		return (1);
 	}
 	return (0);
@@ -74,6 +90,7 @@ int					ft_readline(int fd, t_node *arr, char **line)
 int					get_next_line(const int fd, char **line)
 {
 	static t_node	*fd_ar;
+	int				out;
 
 	if (!line || read(fd, NULL, 0) < 0)
 		return (-1);
@@ -89,10 +106,10 @@ int					get_next_line(const int fd, char **line)
 		if (!(fd_ar = ft_realloc(fd_ar, fd + 1)))
 			return (-1);
 	}
-	if (!ft_readline(fd, fd_ar, line) && !(fd_ar[0].isany))
+	if (!(out = ft_readline(fd, fd_ar, line)) && !(fd_ar[0].isany))
 	{
 		free(fd_ar);
 		fd_ar = NULL;
 	}
-	return (fd_ar[fd].ch ? 1 : 0);
+	return (out ? 1 : 0);
 }
