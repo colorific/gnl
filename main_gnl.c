@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
 	int f;
-//	int f2;
+	int f2;
 	char *buf;
 
 	buf = NULL;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 		{
 			printf("%s\n", buf);
 		}
-	/*
+
 		printf("str:%s\n", buf);
 		// Передача строки с содержимым
 		buf = (char *)malloc(BUFF_SIZE);
@@ -46,7 +46,9 @@ int main(int argc, char *argv[])
 		{
 			printf("buf = %s\n", buf);
 		}
-	*/
+
 	}
+	free (buf);
+	buf = NULL;
 	return (0);
 }

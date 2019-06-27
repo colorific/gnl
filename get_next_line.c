@@ -6,7 +6,7 @@
 /*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/22 18:48:27 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/27 20:53:05 by forange-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ int					ft_readline(int fd, t_node *arr, char **line)
 {
 	int				bytes_read;
 
-	if (!(arr)[fd].ch)
-		ft_check(&(arr)[fd], line);
+	ft_memdel((void**)line);
+	if (ft_check(&(arr)[fd], line))
+		return (1);
 	while ((bytes_read = read(fd, (void *)\
 	(&(arr)[fd].content[arr[fd].content_size]), BUFF_SIZE)))
 	{
@@ -84,6 +85,8 @@ int					ft_readline(int fd, t_node *arr, char **line)
 		if (ft_check(&(arr)[fd], line))
 			return (1);
 	}
+	if (!arr[fd].content_size)
+		ft_memdel((void**)&arr[fd].content);
 	return (0);
 }
 
@@ -106,7 +109,7 @@ int					get_next_line(const int fd, char **line)
 		if (!(fd_ar = ft_realloc(fd_ar, fd + 1)))
 			return (-1);
 	}
-	if (!(out = ft_readline(fd, fd_ar, line)) && !(fd_ar[0].isany))
+	if (!(out = ft_readline(fd, fd_ar, line)))
 	{
 		free(fd_ar);
 		fd_ar = NULL;
