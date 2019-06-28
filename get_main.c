@@ -13,13 +13,13 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 	{
 		f = open(argv[1], O_RDONLY);
-
-		/* Нормальное поведение */
+/*
+		// Нормальное поведение
 		while (get_next_line(f, &buf))
 		{
 			printf("%s\n", buf);
 		}
-/*
+
 		printf("str:%s\n", buf);
 		// Передача строки с содержимым
 		buf = (char *)malloc(BUFF_SIZE);
@@ -38,15 +38,16 @@ int main(int argc, char *argv[])
 		{
 			printf("buf = %s\n", buf);
 		}
-
+*/
 		// Передача FD > MAX_FD
 		int f2;
+		get_next_line(f, &buf);
 		f2 = dup2(f, MAX_FD + 1);
 		while (get_next_line(f2, &buf) >= 0)
 		{
-			printf("buf = %s\n", buf);
+			printf("%s\n", buf);
 		}
- */
+
 		close(f);
 	}
 	free (buf);
