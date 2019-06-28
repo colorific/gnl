@@ -7,7 +7,6 @@
 int main(int argc, char *argv[])
 {
 	int f;
-	int f2;
 	char *buf;
 
 	buf = NULL;
@@ -20,7 +19,7 @@ int main(int argc, char *argv[])
 		{
 			printf("%s\n", buf);
 		}
-
+/*
 		printf("str:%s\n", buf);
 		// Передача строки с содержимым
 		buf = (char *)malloc(BUFF_SIZE);
@@ -41,12 +40,14 @@ int main(int argc, char *argv[])
 		}
 
 		// Передача FD > MAX_FD
+		int f2;
 		f2 = dup2(f, MAX_FD + 1);
 		while (get_next_line(f2, &buf) >= 0)
 		{
 			printf("buf = %s\n", buf);
 		}
-
+ */
+		close(f);
 	}
 	free (buf);
 	buf = NULL;

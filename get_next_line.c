@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: forange- <forange-@student.fr.42>          +#+  +:+       +#+        */
+/*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/27 20:53:05 by forange-         ###   ########.fr       */
+/*   Updated: 2019/06/28 22:57:35 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,33 @@ void				*ft_chrealloc(t_node *ptr, size_t size)
 	return (res);
 }
 
-int					ft_check(t_node *node, char **line)
+char				*ft_writeline(t_node *node)
 {
+	char			*out;
 	unsigned char	*new_content;
 
+	if (!(out = (char*)ft_memalloc((node->ch ? node->ch - node->content :\
+									node->content_size) + 1)))
+		return (out);
+	out = (char*)ft_memcpy(out, node->content,\
+	(node->ch ? node->ch - node->content : node->content_size));
+	if (node->ch)
+	{
+		new_content = (unsigned char*)ft_memalloc(&node->content\
+		[node->content_size - 1] - node->ch + BUFF_SIZE);
+		new_content = ft_memcpy(new_content, node->ch + 1,\
+		&node->content[node->content_size - 1] - node->ch);
+		node->content_size = &node->content[node->content_size - 1] - node->ch;
+	}
+	else
+		node->content_size = 0;
+	free((void*)node->content);
+	node->content = node->ch ? new_content : NULL;
+	return (out);
+}
+
+int					ft_check(t_node *node, char **line)
+{
 	if (!(node->ch = (unsigned char*)ft_memchr(node->content, EOL,\
 			node->content_size)))
 	{
@@ -55,17 +78,7 @@ int					ft_check(t_node *node, char **line)
 	}
 	else
 	{
-		if (!(*line = (char*)ft_memalloc(node->ch - node->content + 1)))
-			return (-1);
-		*line = (char*)ft_memcpy(*line, node->content,\
-		node->ch - node->content);
-		new_content = (unsigned char*)ft_memalloc(&node->content\
-		[node->content_size - 1] - node->ch + BUFF_SIZE);
-		new_content = ft_memcpy(new_content, node->ch + 1,\
-		&node->content[node->content_size - 1] - node->ch);
-		node->content_size = &node->content[node->content_size - 1] - node->ch;
-		free((void*)node->content);
-		node->content = new_content;
+		*line = ft_writeline(node);
 		return (1);
 	}
 	return (0);
@@ -75,7 +88,6 @@ int					ft_readline(int fd, t_node *arr, char **line)
 {
 	int				bytes_read;
 
-	ft_memdel((void**)line);
 	if (ft_check(&(arr)[fd], line))
 		return (1);
 	while ((bytes_read = read(fd, (void *)\
@@ -87,6 +99,11 @@ int					ft_readline(int fd, t_node *arr, char **line)
 	}
 	if (!arr[fd].content_size)
 		ft_memdel((void**)&arr[fd].content);
+	else
+	{
+		*line = ft_writeline(&(arr)[fd]);
+		return (1);
+	}
 	return (0);
 }
 
@@ -111,8 +128,9 @@ int					get_next_line(const int fd, char **line)
 	}
 	if (!(out = ft_readline(fd, fd_ar, line)))
 	{
-		free(fd_ar);
-		fd_ar = NULL;
+		;
+//		free(fd_ar);
+//		fd_ar = NULL;
 	}
 	return (out ? 1 : 0);
 }
