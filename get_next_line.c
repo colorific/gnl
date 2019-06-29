@@ -6,55 +6,25 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/29 01:55:09 by kirill           ###   ########.fr       */
+/*   Updated: 2019/06/29 15:13:11 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-/*
-t_node				*ft_realloc(t_node *ptr, size_t size)
-{
-	t_node			*temp;
 
-	temp = NULL;
-	if ((temp = (t_node *)ft_memalloc(size * sizeof(t_node))) != 0)
-	{
-		temp = ft_memcpy(temp, ptr, ptr[0].arsize);
-		temp[0].arsize = size;
-		ft_memdel((void **)ptr);
-	}
-	return (temp);
-}
-
-void				*ft_chrealloc(t_node *ptr, size_t size)
-{
-	unsigned char	*res;
-
-	res = (unsigned char*)malloc(size);
-	if (!res)
-		return (NULL);
-	res = (unsigned char*)ft_memcpy(res, ptr->content, ptr->content_size);
-	if (ptr->content)
-	{
-		free((void*)ptr->content);
-		ptr->content = NULL;
-	}
-	return (res);
-}
- */
-void			*ft_myrealloc(t_node *ptr, size_t size)
+void			*ft_myrealloc(t_node *ptr, size_t size, char type)
 {
 	void		*temp;
 
 	temp = (t_node *)ft_memalloc(size);
 	if (!temp)
 		return (NULL);
-	temp = ft_memcpy(temp, (ptr[0].arsize ? (void*)ptr : (void*)ptr->content),\
-						ptr[0].arsize ? ptr[0].arsize * sizeof(t_node) : ptr->content_size);
-	if (ptr->content || ptr[0].arsize)
+	temp = ft_memcpy(temp, (type == 'm' ? (void*)ptr : (void*)ptr->content),\
+		type == 'm' ? ptr[0].arsize * sizeof(t_node) : ptr->content_size);
+	if (ptr->content || type == 'm')
 	{
-		free(ptr[0].arsize ? (void *)ptr : (void*)ptr->content);
-		if (!ptr[0].arsize)
+		free(type == 'm' ? (void *)ptr : (void*)ptr->content);
+		if (type == 'n')
 			ptr->content = NULL;
 	}
 	return (temp);
@@ -91,7 +61,7 @@ int					ft_check(t_node *node, char **line)
 			node->content_size)))
 	{
 		if (!(node->content = (unsigned char*)ft_myrealloc(node, \
-		node->content_size + BUFF_SIZE)))
+		node->content_size + BUFF_SIZE, 'n')))
 			return (-1);
 	}
 	else
@@ -141,7 +111,7 @@ int					get_next_line(const int fd, char **line)
 	}
 	if (fd >= fd_ar[0].arsize)
 	{
-		if (!(fd_ar = ft_myrealloc(fd_ar, (fd + 1) * sizeof(t_node))))
+		if (!(fd_ar = ft_myrealloc(fd_ar, (fd + 1) * sizeof(t_node), 'm')))
 			return (-1);
 		fd_ar[0].arsize = fd + 1;
 	}
