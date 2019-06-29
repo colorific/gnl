@@ -6,7 +6,7 @@
 /*   By: kirill <kirill@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 15:13:19 by kirill            #+#    #+#             */
-/*   Updated: 2019/06/29 15:13:11 by kirill           ###   ########.fr       */
+/*   Updated: 2019/06/29 20:34:22 by kirill           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@ void			*ft_myrealloc(t_node *ptr, size_t size, char type)
 	temp = (t_node *)ft_memalloc(size);
 	if (!temp)
 		return (NULL);
-	temp = ft_memcpy(temp, (type == 'm' ? (void*)ptr : (void*)ptr->content),\
-		type == 'm' ? ptr[0].arsize * sizeof(t_node) : ptr->content_size);
-	if (ptr->content || type == 'm')
+	if (type != 'c')
 	{
-		free(type == 'm' ? (void *)ptr : (void*)ptr->content);
-		if (type == 'n')
-			ptr->content = NULL;
+		temp = ft_memcpy(temp, (type == 'm' ? (void*)ptr : (void*)ptr->content),\
+		type == 'm' ? ptr[0].arsize * sizeof(t_node) : ptr->content_size);
+		if (ptr->content || type == 'm')
+		{
+			free(type == 'm' ? (void *)ptr : (void*)ptr->content);
+			if (type == 'n')
+				ptr->content = NULL;
+		}
 	}
 	return (temp);
 }
@@ -102,24 +105,24 @@ int					get_next_line(const int fd, char **line)
 
 	if (!line || read(fd, NULL, 0) < 0)
 		return (-1);
-	if (!fd_ar)
+	if (!fd_ar || fd >= fd_ar[0].arsize)
 	{
-		if (!(fd_ar = (t_node *)ft_memalloc(sizeof(t_node) * \
-			(fd >= MAX_FD ? fd + 1 : MAX_FD))))
+		if (!(fd_ar = ft_myrealloc(fd_ar, (fd >= MAX_FD ? fd + 1 : MAX_FD) *\
+		sizeof(t_node), fd_ar ? 'm' : 'c')))
 			return (-1);
 		fd_ar[0].arsize = (fd >= MAX_FD ? fd + 1 : MAX_FD);
 	}
-	if (fd >= fd_ar[0].arsize)
-	{
-		if (!(fd_ar = ft_myrealloc(fd_ar, (fd + 1) * sizeof(t_node), 'm')))
-			return (-1);
-		fd_ar[0].arsize = fd + 1;
-	}
 	if (!(out = ft_readline(fd, fd_ar, line)))
 	{
-		;
-//		free(fd_ar);
-//		fd_ar = NULL;
+		while (!fd_ar[out].content_size && out++ < fd_ar[0].arsize)
+		{
+			if (out == fd_ar[0].arsize)
+			{
+				free(fd_ar);
+				fd_ar = NULL;
+				break;
+			}
+		}
 	}
-	return (out);
+	return (out > 1 ? 0 : out);
 }

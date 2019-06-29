@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 		while (get_next_line(f, &buf))
 		{
 			printf("%s\n", buf);
+			free(buf);
 		}
 /*
 		printf("str:%s\n", buf);
@@ -57,7 +58,5 @@ int main(int argc, char *argv[])
 */
 	if (f)
 		close(f);
-	free (buf);
-	buf = NULL;
 	return (0);
 }
